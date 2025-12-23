@@ -30,6 +30,12 @@ export default function BookingForm({ service, user }) {
         }
     }, [formData.durationDays, service.pricePerDay]);
 
+    // Derived state for locations
+    const uniqueDivisions = [...new Set(locations.map((item) => item.region))];
+    const availableDistricts = locations.filter(
+        (item) => item.region === formData.division
+    );
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -163,7 +169,7 @@ export default function BookingForm({ service, user }) {
                                 required
                             >
                                 <option value="">Select Division</option>
-                                {locations.divisions.map((div) => (
+                                {uniqueDivisions.map((div) => (
                                     <option key={div} value={div}>{div}</option>
                                 ))}
                             </select>
@@ -182,13 +188,9 @@ export default function BookingForm({ service, user }) {
                                 disabled={!formData.division}
                             >
                                 <option value="">Select District</option>
-                                {formData.division && locations.districts[formData.division]?.map((dist) => (
-                                    <option key={dist} value={dist}>{dist}</option>
+                                {availableDistricts.map((item) => (
+                                    <option key={item.district} value={item.district}>{item.district}</option>
                                 ))}
-                                {/* Fallback if no specific district data for division */}
-                                {!locations.districts[formData.division] && formData.division && (
-                                    <option value={formData.division + " District"}>{formData.division} District</option>
-                                )}
                             </select>
                         </div>
 

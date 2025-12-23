@@ -1,5 +1,5 @@
-import { connect } from "@/lib/db";
- const feedBack = await connect("feedback");
+import { getCollection } from "@/lib/db";
+ const feedBack = await getCollection("feedback");
 export async function GET(req) {
     const result = await feedBack.find({}).toArray();
     return Response.json(result);

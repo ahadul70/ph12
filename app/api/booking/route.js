@@ -1,22 +1,14 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { connect } from "@/lib/db";
+import { getCollection } from "@/lib/db";
 
 export async function POST(req) {
     try {
-        // const session = await getServerSession(authOptions);
-        // if (!session) {
-        //     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-        // }
-        
-        // Mock session for testing
-        const session = {
-            user: {
-                id: "test-user-123",
-                email: "test@example.com"
-            }
-        };
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        }
 
         const {
             serviceId,
@@ -28,7 +20,7 @@ export async function POST(req) {
             location,
         } = await req.json();
 
-        const bookings = await connect("bookings");
+        const bookings = await getCollection("bookings");
 
         const newBooking = {
             userId: session.user.id,
@@ -68,7 +60,7 @@ export async function GET(req) {
             return Response.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        const bookingsCollection = await connect("bookings");
+        const bookingsCollection = await getCollection("bookings");
 
         // Fetch bookings for the logged-in user
         const bookings = await bookingsCollection.find({ userId: session.user.id }).sort({

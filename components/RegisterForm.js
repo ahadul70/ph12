@@ -1,6 +1,4 @@
-
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -41,10 +39,6 @@ export default function RegisterForm() {
             });
 
             if (res.ok) {
-                // Redirect to booking page as per requirement if intended, or login
-                // Requirement says: "Redirect to Booking Page after registration"
-                // But usually we need to login first. Let's redirect to Login for simplicity or auto-login.
-                // I will redirect to login with a success message feeling.
                 router.push("/login?registered=true");
             } else {
                 const data = await res.json();
