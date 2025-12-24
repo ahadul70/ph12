@@ -46,7 +46,7 @@ export async function POST(req) {
             });
         } catch (emailError) {
             console.error("Failed to send invoice email:", emailError);
-            // We don't fail the booking if email fails, just log it
+           
         }
 
         return NextResponse.json(

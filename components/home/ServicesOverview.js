@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 import { Baby, Armchair, Activity, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { services } from "@/lib/data"; // Assuming services data might be useful, or we hardcode the 3 categories
+import { services } from "@/lib/data";  
 
 const serviceCategories = [
     {
-        id: "baby-care", // Map to actual IDs if possible, or use generic
+        id: "baby-care", 
         title: "Baby Care",
         description: "Nurturing and safe babysitting for your little ones. We ensure a secure environment for their growth and play.",
         icon: <Baby className="w-8 h-8 text-blue-500" />,

@@ -23,7 +23,7 @@ export default function BookingForm({ service, user }) {
 
     const [totalCost, setTotalCost] = useState(0);
 
-    // Calculate cost whenever duration or service changes
+ 
     useEffect(() => {
         if (formData.durationDays > 0) {
             setTotalCost(formData.durationDays * service.pricePerDay);
