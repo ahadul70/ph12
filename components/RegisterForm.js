@@ -7,6 +7,8 @@ import { Loader2 } from "lucide-react";
 export default function RegisterForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [nid, setNid] = useState("");
+    const [contact, setContact] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -35,7 +37,7 @@ export default function RegisterForm() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({ name, email, password, nid, contact }),
             });
 
             if (res.ok) {
@@ -76,6 +78,26 @@ export default function RegisterForm() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">NID Number</label>
+                    <input
+                        type="text"
+                        value={nid}
+                        onChange={(e) => setNid(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">Contact Number</label>
+                    <input
+                        type="text"
+                        value={contact}
+                        onChange={(e) => setContact(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         required
                     />

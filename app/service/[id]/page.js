@@ -10,6 +10,22 @@ export function generateStaticParams() {
     }));
 }
 
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+    const service = services.find((s) => s.id === id);
+
+    if (!service) {
+        return {
+            title: "Service Not Found",
+        };
+    }
+
+    return {
+        title: `${service.title} - Care.xyz`,
+        description: service.description,
+    };
+}
+
 export default async function ServiceDetailPage({ params }) {
     const { id } = await params;
 

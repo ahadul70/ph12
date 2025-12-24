@@ -4,6 +4,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
 export default function MyBookingsPage() {
@@ -33,6 +34,30 @@ export default function MyBookingsPage() {
             console.error("Failed to fetch bookings", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleCancel = async (bookingId) => {
+        if (!confirm("Are you sure you want to cancel this booking?")) return;
+
+        try {
+            const res = await fetch(`/api/booking/${bookingId}`, {
+                method: "PATCH",
+            });
+
+            if (res.ok) {
+                // Update the local state to reflect the change
+                setBookings((prev) =>
+                    prev.map((b) =>
+                        b._id === bookingId ? { ...b, status: "Cancelled" } : b
+                    )
+                );
+            } else {
+                alert("Failed to cancel booking");
+            }
+        } catch (error) {
+            console.error("Error cancelling booking:", error);
+            alert("Something went wrong");
         }
     };
 
@@ -85,8 +110,21 @@ export default function MyBookingsPage() {
                                             {booking.status}
                                         </span>
                                         {booking.status === 'Pending' && (
-                                            <div className="mt-2">
-                                                <button className="text-red-500 text-sm hover:underline">Cancel Booking</button>
+                                            <div className="mt-2 flex gap-4">
+                                                <Link
+                                                    href={`/service/${booking.serviceId}`}
+                                                    className="text-blue-600 text-sm hover:underline"
+                                                >
+                                                    View Details
+                                                </Link>
+                                                <div className="">
+                                                    <button
+                                                        onClick={() => handleCancel(booking._id)}
+                                                        className="text-red-500 text-sm hover:underline"
+                                                    >
+                                                        Cancel Booking
+                                                    </button>
+                                                </div>
                                             </div>
                                         )}
                                     </div>

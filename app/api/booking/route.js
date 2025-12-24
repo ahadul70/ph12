@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getCollection } from "@/lib/db";
+import { sendInvoiceEmail } from "@/lib/email";
 
 export async function POST(req) {
     try {
@@ -37,8 +38,16 @@ export async function POST(req) {
 
         const result = await bookings.insertOne(newBooking);
 
-        // TODO: Send Email Invoice here (Mock)
-        console.log("Sending email to:", session.user.email);
+        // Send Email Invoice
+        try {
+            await sendInvoiceEmail({
+                to: session.user.email,
+                booking: { ...newBooking, _id: result.insertedId },
+            });
+        } catch (emailError) {
+            console.error("Failed to send invoice email:", emailError);
+            // We don't fail the booking if email fails, just log it
+        }
 
         return NextResponse.json(
             { message: "Booking created successfully", booking: { ...newBooking, _id: result.insertedId } },
